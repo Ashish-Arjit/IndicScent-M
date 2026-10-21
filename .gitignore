@@ -1,0 +1,35 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+.pytest_cache/
+
+# Virtual environments
+venv/
+.env/
+env/
+ENV/
+
+# Large model weights (keep light models/checkpoints under version control if small)
+*.pt
+*.bin
+*.h5
+*.onnx
+
+# Data & raw files
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/sample_memes.csv
+data/processed/*.npz
+data/sample_memes/*.png
+!data/sample_memes/.gitkeep
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Streamlit run cache
+.streamlit/
