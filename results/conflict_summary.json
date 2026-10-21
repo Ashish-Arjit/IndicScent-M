@@ -1,0 +1,7 @@
+{
+  "total_test_samples": 9,
+  "disagreeing_samples": 7,
+  "conflict_rate_percent": 77.78,
+  "high_severity_conflicts": 0,
+  "moderate_conflicts": 7
+}

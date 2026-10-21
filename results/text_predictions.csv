@@ -1,0 +1,10 @@
+sample_id,text,image_path,raw_sentiment,sentiment,label,predicted_label,predicted_sentiment,text_confidence,is_correct
+MEME_0048,"Team mates helped debug the error in 5 minutes, best group ever!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0048.jpg,positive,positive,2,2,positive,0.3615,True
+MEME_0052,Semester fee submit karne ki last date 25th hai.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0052.jpg,neutral,neutral,1,2,positive,0.3574,False
+MEME_0007,"Chai and rains in Delhi, pure bliss and peace.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0007.jpg,positive,positive,2,2,positive,0.3671,True
+MEME_0009,"Mummy made my favorite gulab jamun today, absolute perfection!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0009.jpg,positive,positive,2,0,negative,0.3724,False
+MEME_0012,Class rescheduled from 10 AM to 2 PM as per official notice.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0012.jpg,neutral,neutral,1,0,negative,0.3831,False
+MEME_0035,"Bohot badiya, hostel mess me phir se aalu gobhi banayi hai.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0035.jpg,negative,negative,0,2,positive,0.3518,False
+MEME_0011,Today temperature in campus is 32 degrees celsius.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0011.jpg,neutral,neutral,1,0,negative,0.3948,False
+MEME_0027,"Lost my college ID card on examination day, huge hassle.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0027.jpg,negative,negative,0,1,neutral,0.3939,False
+MEME_0031,"Oh wonderful, another meeting that could have easily been an email.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0031.jpg,negative,negative,0,1,neutral,0.3712,False

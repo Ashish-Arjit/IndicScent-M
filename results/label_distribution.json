@@ -1,0 +1,54 @@
+{
+  "train": {
+    "total_samples": 42,
+    "counts": {
+      "negative": 14,
+      "neutral": 14,
+      "positive": 14
+    },
+    "percentages": {
+      "negative": 33.33,
+      "neutral": 33.33,
+      "positive": 33.33
+    }
+  },
+  "val": {
+    "total_samples": 9,
+    "counts": {
+      "negative": 3,
+      "neutral": 3,
+      "positive": 3
+    },
+    "percentages": {
+      "negative": 33.33,
+      "neutral": 33.33,
+      "positive": 33.33
+    }
+  },
+  "test": {
+    "total_samples": 9,
+    "counts": {
+      "negative": 3,
+      "neutral": 3,
+      "positive": 3
+    },
+    "percentages": {
+      "negative": 33.33,
+      "neutral": 33.33,
+      "positive": 33.33
+    }
+  },
+  "all_clean": {
+    "total_samples": 60,
+    "counts": {
+      "negative": 20,
+      "neutral": 20,
+      "positive": 20
+    },
+    "percentages": {
+      "negative": 33.33,
+      "neutral": 33.33,
+      "positive": 33.33
+    }
+  }
+}

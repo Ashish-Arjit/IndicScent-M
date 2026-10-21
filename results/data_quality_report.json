@@ -1,0 +1,112 @@
+{
+  "report_title": "IndicSent-M Dataset Quality Report",
+  "dataset_inspection": {
+    "dataset_name": "All Clean Data",
+    "total_rows": 60,
+    "total_columns": 6,
+    "columns": [
+      "sample_id",
+      "text",
+      "image_path",
+      "raw_sentiment",
+      "sentiment",
+      "label"
+    ],
+    "dtypes": {
+      "sample_id": "object",
+      "text": "object",
+      "image_path": "object",
+      "raw_sentiment": "object",
+      "sentiment": "object",
+      "label": "int64"
+    },
+    "missing_counts": {
+      "sample_id": 0,
+      "text": 0,
+      "image_path": 0,
+      "raw_sentiment": 0,
+      "sentiment": 0,
+      "label": 0
+    },
+    "missing_percentages": {
+      "sample_id": 0.0,
+      "text": 0.0,
+      "image_path": 0.0,
+      "raw_sentiment": 0.0,
+      "sentiment": 0.0,
+      "label": 0.0
+    },
+    "duplicate_rows": 0
+  },
+  "image_text_pair_validation": {
+    "total_checked": 60,
+    "valid_pairs": 60,
+    "missing_images_count": 0,
+    "corrupt_images_count": 0,
+    "missing_texts_count": 0,
+    "missing_image_ids": [],
+    "corrupt_image_ids": [],
+    "missing_text_ids": []
+  },
+  "text_statistics": {
+    "min_words": 8,
+    "max_words": 14,
+    "mean_words": 10.53,
+    "median_words": 10.0
+  },
+  "label_distributions": {
+    "train": {
+      "total_samples": 42,
+      "counts": {
+        "negative": 14,
+        "neutral": 14,
+        "positive": 14
+      },
+      "percentages": {
+        "negative": 33.33,
+        "neutral": 33.33,
+        "positive": 33.33
+      }
+    },
+    "val": {
+      "total_samples": 9,
+      "counts": {
+        "negative": 3,
+        "neutral": 3,
+        "positive": 3
+      },
+      "percentages": {
+        "negative": 33.33,
+        "neutral": 33.33,
+        "positive": 33.33
+      }
+    },
+    "test": {
+      "total_samples": 9,
+      "counts": {
+        "negative": 3,
+        "neutral": 3,
+        "positive": 3
+      },
+      "percentages": {
+        "negative": 33.33,
+        "neutral": 33.33,
+        "positive": 33.33
+      }
+    },
+    "all_clean": {
+      "total_samples": 60,
+      "counts": {
+        "negative": 20,
+        "neutral": 20,
+        "positive": 20
+      },
+      "percentages": {
+        "negative": 33.33,
+        "neutral": 33.33,
+        "positive": 33.33
+      }
+    }
+  },
+  "integrity_status": "PASSED"
+}

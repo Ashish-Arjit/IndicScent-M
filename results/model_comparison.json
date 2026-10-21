@@ -1,0 +1,32 @@
+[
+  {
+    "Model Approach": "Text-only",
+    "Modality Input": "Text",
+    "Status": "Evaluated",
+    "Accuracy (%)": 22.22,
+    "Macro-F1": 0.1905,
+    "Precision (Macro)": 0.1667,
+    "Recall (Macro)": 0.2222,
+    "Test Samples": 9
+  },
+  {
+    "Model Approach": "Image-only",
+    "Modality Input": "Image",
+    "Status": "Evaluated",
+    "Accuracy (%)": 100.0,
+    "Macro-F1": 1.0,
+    "Precision (Macro)": 1.0,
+    "Recall (Macro)": 1.0,
+    "Test Samples": 9
+  },
+  {
+    "Model Approach": "Multimodal",
+    "Modality Input": "Multimodal",
+    "Status": "Evaluated",
+    "Accuracy (%)": 100.0,
+    "Macro-F1": 1.0,
+    "Precision (Macro)": 1.0,
+    "Recall (Macro)": 1.0,
+    "Test Samples": 9
+  }
+]

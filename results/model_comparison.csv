@@ -1,0 +1,4 @@
+Model Approach,Modality Input,Status,Accuracy (%),Macro-F1,Precision (Macro),Recall (Macro),Test Samples
+Text-only,Text,Evaluated,22.22,0.1905,0.1667,0.2222,9
+Image-only,Image,Evaluated,100.0,1.0,1.0,1.0,9
+Multimodal,Multimodal,Evaluated,100.0,1.0,1.0,1.0,9

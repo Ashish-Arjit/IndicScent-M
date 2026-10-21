@@ -1,0 +1,59 @@
+{
+  "model_name": "Text-Only (TF-IDF + Logistic Regression)",
+  "modality": "text",
+  "num_test_samples": 9,
+  "accuracy": 0.2222,
+  "macro_f1": 0.1905,
+  "precision_macro": 0.1667,
+  "recall_macro": 0.2222,
+  "confusion_matrix": [
+    [
+      0,
+      2,
+      1
+    ],
+    [
+      2,
+      0,
+      1
+    ],
+    [
+      1,
+      0,
+      2
+    ]
+  ],
+  "class_report": {
+    "negative": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 3.0
+    },
+    "neutral": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 3.0
+    },
+    "positive": {
+      "precision": 0.5,
+      "recall": 0.6666666666666666,
+      "f1-score": 0.5714285714285714,
+      "support": 3.0
+    },
+    "accuracy": 0.2222222222222222,
+    "macro avg": {
+      "precision": 0.16666666666666666,
+      "recall": 0.2222222222222222,
+      "f1-score": 0.19047619047619047,
+      "support": 9.0
+    },
+    "weighted avg": {
+      "precision": 0.16666666666666666,
+      "recall": 0.2222222222222222,
+      "f1-score": 0.19047619047619047,
+      "support": 9.0
+    }
+  }
+}
