@@ -1,0 +1,10 @@
+sample_id,text,image_path,raw_sentiment,sentiment,label
+MEME_0023,Train delayed by five hours and cafeteria food is completely cold.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0023.jpg,negative,negative,0
+MEME_0053,Canteen ka menu Monday se change hoga notice board pe likha hai.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0053.jpg,neutral,neutral,1
+MEME_0039,Congratulations to me for locking myself outside hostel room at midnight.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0039.jpg,negative,negative,0
+MEME_0054,Seminar room 302 me presentation schedule ki gayi hai.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0054.jpg,neutral,neutral,1
+MEME_0026,Electricity cut in hostel during 42 degree summer afternoon.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0026.jpg,negative,negative,0
+MEME_0041,Bhai ka placement ho gaya Google mein! Bohot khushi ka din hai!,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0041.jpg,positive,positive,2
+MEME_0046,"Dost ne birthday pe surprise party organize ki, speechless ho gaya!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0046.jpg,positive,positive,2
+MEME_0016,Syllabus for midterm exams has been updated on university portal.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0016.jpg,neutral,neutral,1
+MEME_0050,"Ghar ka khana after six months of hostel food, feeling heavenly!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0050.jpg,positive,positive,2

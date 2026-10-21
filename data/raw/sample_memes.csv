@@ -1,0 +1,61 @@
+sample_id,text,image_path,raw_sentiment,sentiment,label
+MEME_0001,Passed the semester exam without any backlogs! Party toh banti hai bhai!,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0001.jpg,positive,positive,2
+MEME_0002,"Weekend plans got approved by mom, feeling like a boss today!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0002.jpg,positive,positive,2
+MEME_0003,Finally code compiled on the first attempt without warnings!,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0003.jpg,positive,positive,2
+MEME_0004,"Diwali bonus credited in account, zindagi ban gayi!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0004.jpg,positive,positive,2
+MEME_0005,"College placement drive cleared, very grateful and excited for new journey!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0005.jpg,positive,positive,2
+MEME_0006,"Biryani order arrived 15 minutes before estimated time, best feeling!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0006.jpg,positive,positive,2
+MEME_0007,"Chai and rains in Delhi, pure bliss and peace.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0007.jpg,positive,positive,2
+MEME_0008,Team won the hackathon grand prize after 36 hours of coding!,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0008.jpg,positive,positive,2
+MEME_0009,"Mummy made my favorite gulab jamun today, absolute perfection!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0009.jpg,positive,positive,2
+MEME_0010,"Project demo was a massive success, professor gave full marks!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0010.jpg,positive,positive,2
+MEME_0011,Today temperature in campus is 32 degrees celsius.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0011.jpg,neutral,neutral,1
+MEME_0012,Class rescheduled from 10 AM to 2 PM as per official notice.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0012.jpg,neutral,neutral,1
+MEME_0013,Please submit lab assignment notebook before Thursday 5 PM.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0013.jpg,neutral,neutral,1
+MEME_0014,Metro train frequency reduced on yellow line for track maintenance.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0014.jpg,neutral,neutral,1
+MEME_0015,Waiting at the bus stop for route 412 since twenty minutes.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0015.jpg,neutral,neutral,1
+MEME_0016,Syllabus for midterm exams has been updated on university portal.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0016.jpg,neutral,neutral,1
+MEME_0017,Lecture hall 4 projector is currently undergoing routine maintenance.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0017.jpg,neutral,neutral,1
+MEME_0018,The attendance threshold is seventy-five percent for semester exam.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0018.jpg,neutral,neutral,1
+MEME_0019,Library will remain open till 9 PM during examination week.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0019.jpg,neutral,neutral,1
+MEME_0020,Results will be declared next Monday afternoon via ERP portal.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0020.jpg,neutral,neutral,1
+MEME_0021,WiFi disconnected right in the middle of online coding test!,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0021.jpg,negative,negative,0
+MEME_0022,8 AM morning class on a freezing winter Monday is pure torture.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0022.jpg,negative,negative,0
+MEME_0023,Train delayed by five hours and cafeteria food is completely cold.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0023.jpg,negative,negative,0
+MEME_0024,Laptop motherboard crashed right before the final project submission!,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0024.jpg,negative,negative,0
+MEME_0025,"Auto driver asked three hundred rupees for two kilometer ride, loot macha rakhi hai.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0025.jpg,negative,negative,0
+MEME_0026,Electricity cut in hostel during 42 degree summer afternoon.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0026.jpg,negative,negative,0
+MEME_0027,"Lost my college ID card on examination day, huge hassle.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0027.jpg,negative,negative,0
+MEME_0028,"Worst customer support ever, waiting on call since 45 minutes.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0028.jpg,negative,negative,0
+MEME_0029,Spilled hot coffee on my newly printed project report file.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0029.jpg,negative,negative,0
+MEME_0030,"Traffic jam on highway caused me to miss the flight, total disaster.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0030.jpg,negative,negative,0
+MEME_0031,"Oh wonderful, another meeting that could have easily been an email.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0031.jpg,negative,negative,0
+MEME_0032,"Kya baat hai, exam se ek raat pehle syllabus hi change ho gaya!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0032.jpg,negative,negative,0
+MEME_0033,"Great job guys, broken production code pushed straight to master on Friday!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0033.jpg,negative,negative,0
+MEME_0034,Super happy to see petrol price touching new all-time record high today!,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0034.jpg,negative,negative,0
+MEME_0035,"Bohot badiya, hostel mess me phir se aalu gobhi banayi hai.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0035.jpg,negative,negative,0
+MEME_0036,"Wah kya scene hai, salary aayi nahi ki rent aur EMI ne uda di!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0036.jpg,negative,negative,0
+MEME_0037,"Yes of course, studying 14 units in 3 hours is totally manageable.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0037.jpg,negative,negative,0
+MEME_0038,Subah 6 baje alarm bajna is the most pleasant experience ever.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0038.jpg,negative,negative,0
+MEME_0039,Congratulations to me for locking myself outside hostel room at midnight.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0039.jpg,negative,negative,0
+MEME_0040,"Brilliant! Just when I was about to save, power went off completely.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0040.jpg,negative,negative,0
+MEME_0041,Bhai ka placement ho gaya Google mein! Bohot khushi ka din hai!,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0041.jpg,positive,positive,2
+MEME_0042,"Aaj mausam bohot suhana hai, chai pakode ke sath maze kar rahe hain.",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0042.jpg,positive,positive,2
+MEME_0043,"Professor ne presentation ki bohot tareef ki, sab khush hain!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0043.jpg,positive,positive,2
+MEME_0044,"Hard work paid off, semester topper award mila aaj!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0044.jpg,positive,positive,2
+MEME_0045,"Family ke sath Goa trip confirm ho gayi, super excited!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0045.jpg,positive,positive,2
+MEME_0046,"Dost ne birthday pe surprise party organize ki, speechless ho gaya!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0046.jpg,positive,positive,2
+MEME_0047,"Internship stipend credit ho gaya, aaj sabko treat meri taraf se!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0047.jpg,positive,positive,2
+MEME_0048,"Team mates helped debug the error in 5 minutes, best group ever!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0048.jpg,positive,positive,2
+MEME_0049,Indian cricket team won thrilling match on the last ball!,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0049.jpg,positive,positive,2
+MEME_0050,"Ghar ka khana after six months of hostel food, feeling heavenly!",C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0050.jpg,positive,positive,2
+MEME_0051,Aaj college ki bus 15 minute late aayegi.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0051.jpg,neutral,neutral,1
+MEME_0052,Semester fee submit karne ki last date 25th hai.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0052.jpg,neutral,neutral,1
+MEME_0053,Canteen ka menu Monday se change hoga notice board pe likha hai.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0053.jpg,neutral,neutral,1
+MEME_0054,Seminar room 302 me presentation schedule ki gayi hai.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0054.jpg,neutral,neutral,1
+MEME_0055,Practical exam ke groups roll number ke hisaab se banaye gaye hain.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0055.jpg,neutral,neutral,1
+MEME_0056,Assignment questions portal pe upload kar diye gaye hain.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0056.jpg,neutral,neutral,1
+MEME_0057,Exam hall ticket download link email par send kiya gaya hai.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0057.jpg,neutral,neutral,1
+MEME_0058,Sports day registration desk auditorium ke paas khula hai.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0058.jpg,neutral,neutral,1
+MEME_0059,ID card renewal ke liye passport photo jama karni padegi.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0059.jpg,neutral,neutral,1
+MEME_0060,Next semester registration form kal subah 10 baje open hoga.,C:\Users\btash\OneDrive\Desktop\nlp p-1\IndicSent-M\data\sample_memes\MEME_0060.jpg,neutral,neutral,1
