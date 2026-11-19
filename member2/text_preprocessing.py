@@ -37,6 +37,83 @@ EMOJI_SENTIMENT_MAP = {
     "🤔": " emoji_neutral "
 }
 
+# Task 2.2: Expanded Hinglish and Romanized Indic Phonetic Normalization Map
+# Unifies phonetic spelling variants common in Indian social media memes and chats
+HINGLISH_PHONETIC_MAP = {
+    "bohot": "bahut",
+    "boht": "bahut",
+    "bht": "bahut",
+    "bhut": "bahut",
+    "bahot": "bahut",
+    "bhout": "bahut",
+    "khus": "khush",
+    "khusi": "khush",
+    "khushi": "khush",
+    "accha": "achha",
+    "acha": "achha",
+    "achaa": "achha",
+    "bhayi": "bhai",
+    "bhaiya": "bhai",
+    "bhaii": "bhai",
+    "nhi": "nahi",
+    "nahin": "nahi",
+    "nhn": "nahi",
+    "nai": "nahi",
+    "aj": "aaj",
+    "kl": "kal",
+    "paise": "paisa",
+    "paissa": "paisa",
+    "jindagi": "zindagi",
+    "zindgi": "zindagi",
+    "ekdm": "ekdam",
+    "shaandar": "shandar",
+    "badiya": "badhiya",
+    "bdhiya": "badhiya",
+    "kia": "kya",
+    "kyu": "kyun",
+    "yar": "yaar",
+    "yr": "yaar",
+    "shi": "sahi",
+    "mst": "mast",
+    "bekaar": "bekar",
+    "gya": "gaya",
+    "gyi": "gayi",
+    "gye": "gaye",
+    "rha": "raha",
+    "rhi": "rahi",
+    "rhe": "rahe",
+    "hwa": "hua",
+    "hwi": "hui",
+    "hue": "huye",
+    "lkn": "lekin",
+    "mgr": "magar",
+    "sbse": "sabse",
+    "chaiye": "chahiye",
+    "chahie": "chahiye",
+    "thik": "theek",
+    "thk": "theek",
+    "shukria": "shukriya",
+    "dst": "dost",
+    "maja": "maza",
+    "mza": "maza",
+    "tarif": "tareef"
+}
+
+
+def normalize_hinglish(text: str) -> str:
+    """
+    Task 2.2: Transliteration & Romanized Hinglish phonetic normalizer.
+    Replaces noisy phonetic spelling variations with canonical vocabulary tokens.
+    Handles capitalization and punctuation transparently.
+    """
+    words = text.split()
+    normalized = []
+    for w in words:
+        w_clean = re.sub(r"^[^\w]+|[^\w]+$", "", w.lower())
+        mapped = HINGLISH_PHONETIC_MAP.get(w_clean, w.lower())
+        normalized.append(mapped)
+    return " ".join(normalized)
+
 
 def clean_text(text: str) -> str:
     """
@@ -45,6 +122,7 @@ def clean_text(text: str) -> str:
     - Replace user handles (@mention)
     - Map emoticons and emojis to sentiment markers
     - Reduce character repetitions (e.g., 'soooo good' -> 'soo good')
+    - Normalize Romanized Hinglish spelling variants
     - Normalize whitespace
     """
     if not isinstance(text, str) or not text.strip():
@@ -70,6 +148,9 @@ def clean_text(text: str) -> str:
 
     # Lowercase Latin characters
     text = text.lower()
+
+    # Apply Hinglish phonetic normalization
+    text = normalize_hinglish(text)
 
     # Normalize whitespace
     text = re.sub(r"\s+", " ", text).strip()
