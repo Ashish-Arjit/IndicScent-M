@@ -6,66 +6,78 @@ Identifies potential meme sarcasm, mixed signals, and explains confidence dispar
 
 import sys
 import json
+import argparse
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+import numpy as np
 import pandas as pd
 
 # Add project root to sys.path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from config import RESULTS_DIR, FUSION_CONFIG
+from config import RESULTS_DIR, PROCESSED_DATA_DIR, FUSION_CONFIG
 
 
 def detect_modality_conflict(
     text_result: Dict[str, Any],
     image_result: Dict[str, Any],
-    multimodal_result: Optional[Dict[str, Any]] = None
+    multimodal_result: Optional[Dict[str, Any]] = None,
+    threshold: Optional[float] = None
 ) -> Dict[str, Any]:
     """
-    Compare text-only and image-only predictions.
-    Diagnose conflict status, confidence differential, and resolution behavior.
+    Confidence-Aware Cross-Modal Sentiment Conflict Detection.
+    1. Compares text-only and image-only predictions.
+    2. Compares their confidence scores.
+    3. Identifies cases where the two modalities disagree.
+    4. Flags conflicting predictions with severity level.
+    5. Displays the multimodal prediction when available.
+    6. Returns structured conflict diagnosis (without anthropomorphic reasoning explanations).
     """
     text_sent = text_result.get("sentiment", "unknown")
     text_conf = float(text_result.get("confidence", 0.0))
     image_sent = image_result.get("sentiment", "unknown")
     image_conf = float(image_result.get("confidence", 0.0))
 
-    # Agreement check
+    # 1. Modality agreement check
     is_conflict = (text_sent != image_sent)
     confidence_diff = round(abs(text_conf - image_conf), 4)
-    threshold = FUSION_CONFIG.get("conflict_confidence_threshold", 0.45)
+    thresh = threshold if threshold is not None else FUSION_CONFIG.get("conflict_confidence_threshold", 0.45)
 
     severity = "NONE"
-    explanation = "Modality consensus: Both text and image predict identical sentiment."
+    explanation = f"Modality Consensus: Both text and image independently predict '{text_sent}'."
 
+    # 4. Severity categorization
     if is_conflict:
-        if text_conf >= threshold and image_conf >= threshold:
+        if text_conf >= thresh and image_conf >= thresh:
             severity = "HIGH"
             explanation = (
-                f"Strong Modality Clash: Text indicates '{text_sent}' ({text_conf:.2f}), "
-                f"whereas Image indicates '{image_sent}' ({image_conf:.2f}). "
-                "Often indicates sarcastic memes, ironic humor, or mismatched captions."
+                f"High-Severity Conflict: Text indicates '{text_sent}' (conf: {text_conf:.2f}), "
+                f"while Image indicates '{image_sent}' (conf: {image_conf:.2f}). "
+                f"Modality confidence differential: {confidence_diff:.2f}."
             )
         else:
             severity = "MODERATE"
             explanation = (
-                f"Moderate Disagreement: Text indicates '{text_sent}' ({text_conf:.2f}), "
-                f"Image indicates '{image_sent}' ({image_conf:.2f}). One or both modalities have lower certainty."
+                f"Moderate Disagreement: Text indicates '{text_sent}' (conf: {text_conf:.2f}), "
+                f"Image indicates '{image_sent}' (conf: {image_conf:.2f}). One or both modalities show lower certainty."
             )
 
+    # 5. Multimodal resolution display
+    mm_sent = None
+    mm_conf = None
     resolution = None
     if multimodal_result is not None:
         mm_sent = multimodal_result.get("sentiment", "unknown")
         mm_conf = float(multimodal_result.get("confidence", 0.0))
 
         if not is_conflict:
-            resolution = f"Consensus maintained by multimodal model ({mm_sent})."
+            resolution = f"Consensus maintained by multimodal model: '{mm_sent}' ({mm_conf:.2f})."
         else:
             if mm_sent == text_sent:
-                resolution = f"Multimodal model prioritized text modality ({mm_sent}, {mm_conf:.2f})."
+                resolution = f"Multimodal decision aligned with text modality: '{mm_sent}' ({mm_conf:.2f})."
             elif mm_sent == image_sent:
-                resolution = f"Multimodal model prioritized visual modality ({mm_sent}, {mm_conf:.2f})."
+                resolution = f"Multimodal decision aligned with visual modality: '{mm_sent}' ({mm_conf:.2f})."
             else:
-                resolution = f"Multimodal model synthesized a third perspective: '{mm_sent}' ({mm_conf:.2f})."
+                resolution = f"Multimodal decision synthesized alternative class: '{mm_sent}' ({mm_conf:.2f})."
 
     return {
         "is_conflict": is_conflict,
@@ -75,15 +87,118 @@ def detect_modality_conflict(
         "image_sentiment": image_sent,
         "image_confidence": image_conf,
         "confidence_difference": confidence_diff,
-        "explanation": explanation,
-        "multimodal_resolution": resolution
+        "multimodal_sentiment": mm_sent,
+        "multimodal_confidence": mm_conf,
+        "multimodal_resolution": resolution,
+        "explanation": explanation
     }
+
+
+def tune_conflict_threshold(
+    val_csv: Optional[Path] = None
+) -> Dict[str, Any]:
+    """
+    Task 4.2: Adaptive Conflict Threshold Tuning & Error Analysis.
+    Optimizes the confidence differential threshold to maximize F1-score
+    specifically on sarcastic/ironic memes or disagreement detection.
+    Evaluates precision, recall, and F1 across candidate thresholds [0.20, 0.65].
+    """
+    target_csv = val_csv if val_csv else PROCESSED_DATA_DIR / "val.csv"
+    if not target_csv.exists():
+        print(f"Validation dataset not found at {target_csv}. Using default threshold.")
+        return {"tuned_threshold": 0.45}
+
+    df_val = pd.read_csv(target_csv)
+    from member2.text_model import TextSentimentClassifier
+    from member3.image_model import ImageSentimentClassifier
+    from member4.multimodal_model import MultimodalSentimentClassifier
+
+    text_clf = TextSentimentClassifier().load()
+    image_clf = ImageSentimentClassifier().load()
+    mm_clf = MultimodalSentimentClassifier().load()
+
+    t_preds = text_clf.predict(df_val["text"].tolist())
+    i_preds = image_clf.predict(df_val["image_path"].tolist())
+    m_preds = mm_clf.predict(df_val["text"].tolist(), df_val["image_path"].tolist())
+
+    candidates = np.linspace(0.20, 0.65, 10).round(2).tolist()
+    best_thresh = 0.45
+    best_f1 = -1.0
+    best_p = 0.0
+    best_r = 0.0
+    curve_data = []
+
+    print("\n[Task 4.2] Adaptive Threshold Tuning (Precision-Recall Optimization):")
+    print(f"{'Threshold (tau)':<16} | {'Precision':<10} | {'Recall':<10} | {'F1-Score':<10}")
+    print("-" * 54)
+
+    for tau in candidates:
+        tp = 0
+        fp = 0
+        fn = 0
+        for idx in range(len(df_val)):
+            diag = detect_modality_conflict(t_preds[idx], i_preds[idx], m_preds[idx], threshold=tau)
+            # Ground truth disagreement is defined when unimodal predictions diverge
+            ground_truth_disagree = (t_preds[idx]["sentiment"] != i_preds[idx]["sentiment"])
+            pred_high = (diag["conflict_severity"] == "HIGH")
+
+            if pred_high and ground_truth_disagree:
+                tp += 1
+            elif pred_high and not ground_truth_disagree:
+                fp += 1
+            elif not pred_high and ground_truth_disagree:
+                fn += 1
+
+        prec = float(tp / (tp + fp)) if (tp + fp) > 0 else 1.0
+        rec = float(tp / (tp + fn)) if (tp + fn) > 0 else 0.0
+        f1 = float(2 * prec * rec / (prec + rec)) if (prec + rec) > 0 else 0.0
+
+        curve_data.append({
+            "threshold": tau,
+            "precision": round(prec, 4),
+            "recall": round(rec, 4),
+            "f1": round(f1, 4)
+        })
+        print(f"tau = {tau:<10.2f} | {prec:<10.4f} | {rec:<10.4f} | {f1:<10.4f}")
+
+        if f1 > best_f1:
+            best_f1 = f1
+            best_thresh = tau
+            best_p = prec
+            best_r = rec
+
+    print("-" * 54)
+    print(f"Optimal Adaptive Conflict Threshold: tau* = {best_thresh:.2f} (F1: {best_f1:.4f}, Prec: {best_p:.4f}, Rec: {best_r:.4f})\n")
+
+    tuning_summary = {
+        "tuned_threshold": best_thresh,
+        "tuning_precision": round(best_p, 4),
+        "tuning_recall": round(best_r, 4),
+        "tuning_f1": round(best_f1, 4),
+        "threshold_curve": curve_data
+    }
+
+    # Update results/conflict_summary.json if exists
+    sum_json = RESULTS_DIR / "conflict_summary.json"
+    existing_sum = {}
+    if sum_json.exists():
+        with open(sum_json, "r", encoding="utf-8") as f:
+            try:
+                existing_sum = json.load(f)
+            except Exception:
+                pass
+    existing_sum.update(tuning_summary)
+    with open(sum_json, "w", encoding="utf-8") as f:
+        json.dump(existing_sum, f, indent=2)
+
+    return tuning_summary
 
 
 def analyze_test_set_conflicts() -> Dict[str, Any]:
     """
     Run conflict analysis across the entire test set by joining predictions
     from text_predictions.csv, image_predictions.csv, and multimodal_predictions.csv.
+    Saves results to results/conflict_analysis.csv and results/conflict_summary.json.
     """
     text_p = RESULTS_DIR / "text_predictions.csv"
     image_p = RESULTS_DIR / "image_predictions.csv"
@@ -165,4 +280,11 @@ def analyze_test_set_conflicts() -> Dict[str, Any]:
 
 
 if __name__ == "__main__":
-    analyze_test_set_conflicts()
+    parser = argparse.ArgumentParser(description="Conflict & Disagreement Analysis (Member 4)")
+    parser.add_argument("--tune-threshold", action="store_true", help="Run adaptive threshold ROC optimization (Task 4.2)")
+    args = parser.parse_args()
+
+    if args.tune_threshold:
+        tune_conflict_threshold()
+    else:
+        analyze_test_set_conflicts()

@@ -78,7 +78,7 @@ class MultimodalFeatureFusion:
         s_path.parent.mkdir(parents=True, exist_ok=True)
         with open(s_path, "wb") as f:
             pickle.dump(self.scaler, f)
-        self.text_extractor.save()
+        self.text_extractor.save(MODELS_DIR / "fusion_text_vectorizer.pkl")
         print(f"Fusion scaler saved to {s_path}")
 
     def load(self, filepath: Union[str, Path] = None) -> "MultimodalFeatureFusion":
@@ -88,7 +88,11 @@ class MultimodalFeatureFusion:
             raise FileNotFoundError(f"Scaler file not found at {s_path}")
         with open(s_path, "rb") as f:
             self.scaler = pickle.load(f)
-        self.text_extractor.load()
+        
+        vec_path = MODELS_DIR / "fusion_text_vectorizer.pkl"
+        if not vec_path.exists():
+            vec_path = MODELS_DIR / "text_vectorizer.pkl"
+        self.text_extractor.load(vec_path)
         self.is_fitted = True
         return self
 

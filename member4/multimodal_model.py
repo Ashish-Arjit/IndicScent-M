@@ -30,9 +30,16 @@ from member4.feature_fusion import MultimodalFeatureFusion
 
 
 class MultimodalSentimentClassifier:
-    """Multimodal sentiment classifier utilizing concatenated text and visual representations."""
+    """
+    Multimodal sentiment classifier utilizing:
+    1. Early feature concatenation with StandardScaler normalization (default).
+    2. Task 4.1: Late fusion probability blending:
+       P_final = alpha * P_text + (1 - alpha) * P_image
+       with grid search tuning of alpha on the validation split.
+    """
 
-    def __init__(self, c_param: float = None, max_iter: int = None):
+    def __init__(self, c_param: float = None, max_iter: int = None, fusion_method: str = "concat"):
+        self.fusion_method = (fusion_method or FUSION_CONFIG.get("fusion_method", "concat")).lower()
         self.c_param = c_param or FUSION_CONFIG["c_param"]
         self.max_iter = max_iter or FUSION_CONFIG["max_iter"]
         self.fusion = MultimodalFeatureFusion()
@@ -42,7 +49,19 @@ class MultimodalSentimentClassifier:
             random_state=RANDOM_SEED,
             class_weight="balanced"
         )
+        self.alpha = 0.5
+        self.text_model = None
+        self.image_model = None
         self.is_trained = False
+
+    def _get_or_load_unimodal_models(self):
+        """Helper to ensure text and image models are available for late fusion."""
+        from member2.text_model import TextSentimentClassifier
+        from member3.image_model import ImageSentimentClassifier
+        if self.text_model is None:
+            self.text_model = TextSentimentClassifier().load()
+        if self.image_model is None:
+            self.image_model = ImageSentimentClassifier().load()
 
     def train(
         self,
@@ -51,7 +70,44 @@ class MultimodalSentimentClassifier:
         labels: List[int]
     ) -> "MultimodalSentimentClassifier":
         """Fit fusion extractors and train multimodal classifier."""
-        print(f"Preparing multimodal features for {len(texts)} samples...")
+        if self.fusion_method == "late":
+            print(f"[Task 4.1] Training Decision-Level Late Fusion (alpha blending) on {len(texts)} samples...")
+            self._get_or_load_unimodal_models()
+            
+            # Grid search for optimal alpha on validation split
+            val_csv = PROCESSED_DATA_DIR / "val.csv"
+            best_alpha = 0.5
+            best_f1 = -1.0
+            
+            if val_csv.exists():
+                df_val = pd.read_csv(val_csv)
+                val_texts = df_val["text"].tolist()
+                val_imgs = df_val["image_path"].tolist()
+                y_val = df_val["label"].to_numpy()
+
+                t_preds = self.text_model.predict(val_texts)
+                i_preds = self.image_model.predict(val_imgs)
+
+                P_t = np.array([[p["probabilities"][c] for c in CLASS_NAMES] for p in t_preds])
+                P_i = np.array([[p["probabilities"][c] for c in CLASS_NAMES] for p in i_preds])
+
+                print("Optimizing modality weight alpha in [0.1, 0.9] on validation split:")
+                for candidate_alpha in np.linspace(0.1, 0.9, 9):
+                    blended = candidate_alpha * P_t + (1.0 - candidate_alpha) * P_i
+                    preds = np.argmax(blended, axis=1)
+                    score = float(f1_score(y_val, preds, average="macro", zero_division=0))
+                    print(f"  alpha={candidate_alpha:.2f} -> Validation Macro-F1: {score:.4f}")
+                    if score > best_f1:
+                        best_f1 = score
+                        best_alpha = round(float(candidate_alpha), 2)
+            
+            self.alpha = best_alpha
+            print(f"Optimal late fusion alpha selected: {self.alpha} (Val Macro-F1: {best_f1:.4f})")
+            self.is_trained = True
+            return self
+
+        # Default: Early feature concatenation
+        print(f"Preparing multimodal features (early concat) for {len(texts)} samples...")
         self.fusion.fit(texts, image_paths)
         X = self.fusion.transform(texts, image_paths)
         y = np.array(labels)
@@ -79,6 +135,35 @@ class MultimodalSentimentClassifier:
         if len(texts) != len(images):
             raise ValueError("Texts and images lists must have identical lengths.")
 
+        # Late fusion probability blending branch
+        if self.fusion_method == "late":
+            self._get_or_load_unimodal_models()
+            t_preds = self.text_model.predict(texts)
+            i_preds = self.image_model.predict(images)
+
+            results = []
+            for t_p, i_p in zip(t_preds, i_preds):
+                prob_dict = {}
+                for c in CLASS_NAMES:
+                    p_t = t_p["probabilities"].get(c, 0.0)
+                    p_i = i_p["probabilities"].get(c, 0.0)
+                    prob_dict[c] = round(float(self.alpha * p_t + (1.0 - self.alpha) * p_i), 4)
+
+                best_cls = max(prob_dict, key=prob_dict.get)
+                label_int = CLASS_NAMES.index(best_cls)
+                confidence = float(prob_dict[best_cls])
+
+                results.append({
+                    "label": label_int,
+                    "sentiment": best_cls,
+                    "confidence": round(confidence, 4),
+                    "probabilities": prob_dict,
+                    "fusion_method": "late_fusion",
+                    "alpha": self.alpha
+                })
+            return results
+
+        # Early fusion branch
         X = self.fusion.transform(texts, images)
         probas = self.model.predict_proba(X)
         preds = self.model.predict(X)
@@ -94,7 +179,8 @@ class MultimodalSentimentClassifier:
                 "label": label_int,
                 "sentiment": sentiment_name,
                 "confidence": round(confidence, 4),
-                "probabilities": prob_dict
+                "probabilities": prob_dict,
+                "fusion_method": "concat"
             })
         return results
 
@@ -102,10 +188,22 @@ class MultimodalSentimentClassifier:
         """Save classifier and fusion pipeline."""
         m_path = Path(model_path) if model_path else MODELS_DIR / "multimodal_model.pkl"
         m_path.parent.mkdir(parents=True, exist_ok=True)
+        save_dict = {
+            "fusion_method": self.fusion_method,
+            "alpha": self.alpha,
+            "model": self.model
+        }
         with open(m_path, "wb") as f:
-            pickle.dump(self.model, f)
-        self.fusion.save()
-        print(f"Multimodal model saved to {m_path}")
+            pickle.dump(save_dict, f)
+        
+        # Save late fusion config as JSON as well
+        config_path = MODELS_DIR / "fusion_config.json"
+        with open(config_path, "w", encoding="utf-8") as f:
+            json.dump({"fusion_method": self.fusion_method, "alpha": self.alpha}, f, indent=2)
+
+        if self.fusion_method != "late":
+            self.fusion.save()
+        print(f"Multimodal model saved to {m_path} (Method: {self.fusion_method})")
 
     def load(self, model_path: Union[str, Path] = None) -> "MultimodalSentimentClassifier":
         """Load classifier and fusion pipeline."""
@@ -114,20 +212,34 @@ class MultimodalSentimentClassifier:
             raise FileNotFoundError(f"Multimodal model file not found at {m_path}")
 
         with open(m_path, "rb") as f:
-            self.model = pickle.load(f)
-        self.fusion.load()
+            loaded = pickle.load(f)
+
+        if isinstance(loaded, dict) and "fusion_method" in loaded:
+            self.fusion_method = loaded["fusion_method"]
+            self.alpha = loaded.get("alpha", 0.5)
+            self.model = loaded["model"]
+        else:
+            # Backward compatibility with legacy pickled LogisticRegression
+            self.fusion_method = "concat"
+            self.model = loaded
+
+        if self.fusion_method != "late":
+            self.fusion.load()
+        else:
+            self._get_or_load_unimodal_models()
+
         self.is_trained = True
         return self
 
 
-def train_multimodal_pipeline() -> MultimodalSentimentClassifier:
+def train_multimodal_pipeline(fusion_method: str = "concat") -> MultimodalSentimentClassifier:
     """Load train.csv and train multimodal sentiment model."""
     train_csv = PROCESSED_DATA_DIR / "train.csv"
     if not train_csv.exists():
         raise FileNotFoundError(f"Train split not found at {train_csv}. Run Member 1 first.")
 
     df_train = pd.read_csv(train_csv)
-    classifier = MultimodalSentimentClassifier()
+    classifier = MultimodalSentimentClassifier(fusion_method=fusion_method)
     classifier.train(
         texts=df_train["text"].tolist(),
         image_paths=df_train["image_path"].tolist(),
@@ -203,5 +315,10 @@ def evaluate_multimodal_model() -> Dict[str, Any]:
 
 
 if __name__ == "__main__":
-    train_multimodal_pipeline()
+    import argparse
+    parser = argparse.ArgumentParser(description="Multimodal Model Training & Evaluation (Member 4)")
+    parser.add_argument("--fusion-method", choices=["concat", "late"], default="concat", help="Early concat or decision-level late fusion")
+    args = parser.parse_args()
+
+    train_multimodal_pipeline(fusion_method=args.fusion_method)
     evaluate_multimodal_model()
