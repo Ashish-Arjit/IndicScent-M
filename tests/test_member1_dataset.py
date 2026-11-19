@@ -39,7 +39,7 @@ class TestMember1Dataset(unittest.TestCase):
                 "sentiment": ["positive", "neutral", "negative"][i % 3]
             })
         df = pd.DataFrame(data)
-        train_df, val_df, test_df = clean_and_split_dataset(df, test_size=0.2, val_size=0.2)
+        train_df, val_df, test_df = clean_and_split_dataset(df, test_size=0.2, val_size=0.2, save_to_disk=False)
 
         self.assertEqual(len(train_df) + len(val_df) + len(test_df), 30)
         
