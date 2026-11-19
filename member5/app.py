@@ -104,8 +104,9 @@ def main():
     )
 
     # Main Navigation Tabs
-    tab_demo, tab_eval, tab_conflicts, tab_about = st.tabs([
+    tab_demo, tab_batch, tab_eval, tab_conflicts, tab_about = st.tabs([
         "🚀 Live Sentiment Demo",
+        "📁 Batch CSV Processing",
         "📊 Model Comparison & Metrics",
         "🔍 Conflict Analysis Explorer",
         "📖 Project Overview"
@@ -223,7 +224,116 @@ def main():
                     else:
                         st.success(f"✅ **Consensus Reached:** Both modalities agree on '{conflict['text_sentiment']}'.")
 
-    # ==================== TAB 2: BENCHMARK & METRICS ====================
+    # ==================== TAB 2: BATCH CSV PROCESSING (Task 5.1) ====================
+    with tab_batch:
+        st.header("Batch Evaluation & Dataset Inference")
+        st.write("Upload a CSV file containing social media posts, captions, or memes to evaluate across all models.")
+
+        batch_source = st.radio(
+            "Select dataset source:",
+            ["Upload Custom CSV", "Load Benchmark Test Split (data/processed/test.csv)"],
+            horizontal=True
+        )
+
+        df_batch = None
+        if batch_source == "Upload Custom CSV":
+            uploaded_csv = st.file_uploader("Upload CSV file (must include 'text' column, optional 'image_path'):", type=["csv"])
+            if uploaded_csv is not None:
+                try:
+                    df_batch = pd.read_csv(uploaded_csv)
+                    st.success(f"Loaded {len(df_batch)} records from uploaded file.")
+                except Exception as e:
+                    st.error(f"Error parsing uploaded CSV: {e}")
+        else:
+            test_path = Path(__file__).resolve().parent.parent / "data" / "processed" / "test.csv"
+            if test_path.exists():
+                df_batch = pd.read_csv(test_path)
+                st.info(f"Loaded {len(df_batch)} test benchmark samples from {test_path.name}")
+            else:
+                st.warning("Benchmark test.csv not found. Run python main.py --prepare-data first.")
+
+        if df_batch is not None and not df_batch.empty:
+            st.subheader("Data Preview")
+            st.dataframe(df_batch.head(5), use_container_width=True)
+
+            # Detect text and image columns
+            candidate_text_cols = [c for c in df_batch.columns if c.lower() in ["text", "caption", "sentence", "content"]]
+            text_col = candidate_text_cols[0] if candidate_text_cols else df_batch.columns[0]
+            
+            candidate_img_cols = [c for c in df_batch.columns if c.lower() in ["image_path", "image", "img_path", "img"]]
+            img_col = candidate_img_cols[0] if candidate_img_cols else None
+
+            c1, c2 = st.columns(2)
+            with c1:
+                selected_text_col = st.selectbox("Text Column:", df_batch.columns, index=df_batch.columns.get_loc(text_col))
+            with c2:
+                img_options = ["None"] + list(df_batch.columns)
+                default_idx = (img_options.index(img_col)) if img_col in img_options else 0
+                selected_img_col = st.selectbox("Image Path Column (optional):", img_options, index=default_idx)
+
+            if st.button("⚡ Process Batch Predictions", type="primary", use_container_width=True):
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                results_records = []
+
+                total_rows = len(df_batch)
+                for i, row in df_batch.iterrows():
+                    status_text.text(f"Processing row {i+1} of {total_rows}...")
+                    row_text = str(row[selected_text_col]) if pd.notna(row[selected_text_col]) else None
+                    row_img = None
+                    if selected_img_col != "None" and pd.notna(row[selected_img_col]):
+                        p = Path(str(row[selected_img_col]))
+                        if p.exists():
+                            row_img = p
+
+                    res = pipeline.analyze(text=row_text, image=row_img)
+                    t_res = res.get("text_prediction") or {}
+                    i_res = res.get("image_prediction") or {}
+                    m_res = res.get("multimodal_prediction") or {}
+                    diag = res.get("conflict_diagnosis") or {}
+
+                    row_record = {
+                        "row_id": i + 1,
+                        "text": row_text,
+                        "image_path": str(row_img) if row_img else "N/A",
+                        "text_sentiment": t_res.get("sentiment", "N/A"),
+                        "text_confidence": t_res.get("confidence", "N/A"),
+                        "image_sentiment": i_res.get("sentiment", "N/A"),
+                        "image_confidence": i_res.get("confidence", "N/A"),
+                        "multimodal_sentiment": m_res.get("sentiment", "N/A"),
+                        "multimodal_confidence": m_res.get("confidence", "N/A"),
+                        "is_conflict": diag.get("is_conflict", False),
+                        "conflict_severity": diag.get("conflict_severity", "NONE"),
+                        "multimodal_resolution": diag.get("multimodal_resolution", "N/A")
+                    }
+                    results_records.append(row_record)
+                    progress_bar.progress((i + 1) / total_rows)
+
+                status_text.success(f"Successfully processed {total_rows} records!")
+                df_out = pd.DataFrame(results_records)
+
+                # Batch summary metrics
+                s1, s2, s3 = st.columns(3)
+                s1.metric("Processed Samples", total_rows)
+                conflicts_n = int(df_out["is_conflict"].sum())
+                s2.metric("Disagreements Detected", f"{conflicts_n} ({conflicts_n/total_rows*100:.1f}%)")
+                high_n = int((df_out["conflict_severity"] == "HIGH").sum())
+                s3.metric("High Severity Conflicts", high_n)
+
+                st.subheader("Annotated Predictions Table")
+                st.dataframe(df_out, use_container_width=True)
+
+                # Download CSV
+                csv_bytes = df_out.to_csv(index=False).encode("utf-8")
+                st.download_button(
+                    label="📥 Download Annotated Predictions CSV",
+                    data=csv_bytes,
+                    file_name="indicsent_batch_predictions.csv",
+                    mime="text/csv",
+                    use_container_width=True
+                )
+
+    # ==================== TAB 3: BENCHMARK & METRICS ====================
     with tab_eval:
         st.header("Comparative Model Evaluation")
         st.write("Genuine evaluation metrics computed on the stratified test split.")
@@ -262,7 +372,7 @@ def main():
                 else:
                     st.caption("No metrics found.")
 
-    # ==================== TAB 3: CONFLICT EXPLORER ====================
+    # ==================== TAB 4: CONFLICT EXPLORER ====================
     with tab_conflicts:
         st.header("Test-Set Conflict & Disagreement Analysis")
         st.write("Browse test samples where text-only and image-only models produced divergent predictions.")
@@ -287,7 +397,7 @@ def main():
         else:
             st.info("Conflict analysis not run yet. Run: `python member4/conflict_detection.py`")
 
-    # ==================== TAB 4: PROJECT OVERVIEW ====================
+    # ==================== TAB 5: PROJECT OVERVIEW ====================
     with tab_about:
         st.header("Project Architecture: IndicSent-M")
         st.markdown("""
