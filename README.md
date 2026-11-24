@@ -36,7 +36,7 @@ Standard text-only sentiment classifiers often fail when confronted with **mixed
 ```text
 IndicSent-M/
 │
-├── member1/                     # Member 1: Dataset Preparation (Surya Pratap Singh)
+├── member1/                     # Member 1: Dataset Preparation (B. Sai Krishna)
 │   ├── dataset_inspection.py    # Column inspection, types, missing rates, pair integrity
 │   ├── dataset_preprocessing.py # Cleaning, label mapping, reproducible sample generator, stratified splitting
 │   ├── label_analysis.py        # Split label frequency and balance analysis
@@ -50,21 +50,21 @@ IndicSent-M/
 │   ├── evaluate_text.py         # Evaluates on test split, exports metrics & predictions
 │   └── README.md
 │
-├── member3/                     # Member 3: Image Sentiment Analysis (CH. Akhil)
+├── member3/                     # Member 3: Image Sentiment Analysis (Surya Pratap Singh)
 │   ├── image_preprocessing.py   # Resizing (224x224), RGB conversion, ImageNet tensor normalization
 │   ├── image_feature_extraction.py # Pretrained ResNet-18 (512-dim visual embeddings)
 │   ├── image_model.py           # Image sentiment classifier (saves to models/image_model.pkl)
 │   ├── evaluate_image.py        # Evaluates on test memes, exports metrics & predictions
 │   └── README.md
 │
-├── member4/                     # Member 4: Multimodal Fusion & Conflict Detection (B. Rushindra Choudary)
+├── member4/                     # Member 4: Multimodal Fusion & Conflict Detection (CH. Akhil)
 │   ├── feature_fusion.py        # Feature concatenation & StandardScaler normalization
 │   ├── multimodal_model.py      # Unified multimodal classifier (saves to models/multimodal_model.pkl)
 │   ├── conflict_detection.py    # Disagreement & sarcasm diagnostic pipeline
 │   ├── compare_models.py        # Side-by-side benchmark table comparing all 3 modalities
 │   └── README.md
 │
-├── member5/                     # Member 5: Integration & Application (B. Sai Krishna)
+├── member5/                     # Member 5: Integration & Application (B. Rushindra Chowdary)
 │   ├── app.py                   # Streamlit web application with live demo, benchmarks & conflict viewer
 │   ├── integration.py           # End-to-end inference coordinator (IndicSentPipeline)
 │   ├── results_dashboard.py     # Terminal console summary dashboard
