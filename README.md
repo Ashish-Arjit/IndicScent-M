@@ -23,11 +23,11 @@ Standard text-only sentiment classifiers often fail when confronted with **mixed
 
 | Member | Name | Designated Module | Area of Ownership |
 | :--- | :--- | :--- | :--- |
-| **Member 1** | Surya Pratap Singh | `member1/` | Dataset preparation, pair validation, label standardization, stratified splitting, and data quality reporting |
+| **Member 1** | B. Sai Krishna | `member1/` | Dataset preparation, pair validation, label standardization, stratified splitting, and data quality reporting |
 | **Member 2** | B.T. Ashish | `member2/` | Multilingual text cleaning, emoji mapping, TF-IDF vectorization, and text sentiment classification |
-| **Member 3** | CH. Akhil | `member3/` | Image preprocessing, ResNet-18 visual feature extraction, and image sentiment classification |
-| **Member 4** | B. Rushindra Choudary | `member4/` | Multimodal feature fusion, multimodal classifier, conflict detection engine, and 3-way comparative evaluation |
-| **Member 5** | B. Sai Krishna | `member5/` | Unified inference coordinator, interactive Streamlit UI, results dashboard, and integration test suite |
+| **Member 3** | Surya Pratap Singh | `member3/` | Image preprocessing, ResNet-18 visual feature extraction, and image sentiment classification |
+| **Member 4** | CH. Akhil | `member4/` | Multimodal feature fusion, multimodal classifier, conflict detection engine, and 3-way comparative evaluation |
+| **Member 5** | B. Rushindra Chowdary | `member5/` | Unified inference coordinator, interactive Streamlit UI, results dashboard, and integration test suite |
 
 ---
 
