@@ -1,6 +1,6 @@
 # Member 5: Integration, Streamlit Application & Testing
 
-**Owner:** B. Sai Krishna  
+**Owner:** B. Rushindra Chowdary
 **Milestone:** End-to-End Pipeline Integration, Interactive UI, and Validation
 
 ---
