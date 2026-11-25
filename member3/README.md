@@ -1,6 +1,6 @@
 # Member 3: Image Sentiment Analysis
 
-**Owner:** CH. Akhil  
+**Owner:** Surya Pratap Singh  
 **Milestone:** Visual Feature Extraction, Pretrained ResNet Backbone, and Image-Only Sentiment Classification
 
 ---
