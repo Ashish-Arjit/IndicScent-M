@@ -1,6 +1,6 @@
 # Member 4: Multimodal Fusion & Conflict Detection
 
-**Owner:** B. Rushindra Choudary  
+**Owner:** CH. Akhil
 **Milestone:** Feature Fusion, Multimodal Classifier, Disagreement Diagnosis, and Comparative Evaluation
 
 ---
